@@ -41,17 +41,17 @@ class ProductsController extends Controller
      */
     public function newAction(Request $request)
     {
+            $product = new Products();
+            $product->setName($_POST["Name"]);
+            $product->setQuantity($_POST["Quantity"]);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
 
-      $product = new Products();
-      $product->setName($_POST["Name"]);
-      $product->setQuantity($_POST["Quantity"]);
-      $em = $this->getDoctrine()->getManager();
-      $em->persist($product);
-      $em->flush();
+            $response = new JsonResponse();
+            $response->setData(array('status' => "ok"));
+            return $response;
 
-     $response = new JsonResponse();
-      $response->setData(array('status' => "ok"));
-      return $response;
     }
 
     /**
