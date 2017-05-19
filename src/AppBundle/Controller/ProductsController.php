@@ -39,7 +39,7 @@ class ProductsController extends Controller
      */
     public function newAction(Request $request)
     {
-        $product = new Product();
+        $product = new Products();
         $form = $this->createForm('AppBundle\Form\ProductsType', $product);
         $form->handleRequest($request);
 
@@ -47,8 +47,12 @@ class ProductsController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
+            $products = $em->getRepository('AppBundle:Products')->findAll();
+            return $this->render('products/index.html.twig', array(
+                'products' => $products,
+            ));
 
-            return $this->redirectToRoute('_show', array('id' => $product->getId()));
+            //return $this->redirectToRoute('_show', array('id' => $product->getId()));
         }
 
         return $this->render('products/new.html.twig', array(
