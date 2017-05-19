@@ -51,8 +51,6 @@ class ProductsController extends Controller
             return $this->render('products/index.html.twig', array(
                 'products' => $products,
             ));
-
-            //return $this->redirectToRoute('_show', array('id' => $product->getId()));
         }
 
         return $this->render('products/new.html.twig', array(
