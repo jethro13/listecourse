@@ -5,7 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Products;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Product controller.
@@ -39,24 +41,17 @@ class ProductsController extends Controller
      */
     public function newAction(Request $request)
     {
-        $product = new Products();
-        $form = $this->createForm('AppBundle\Form\ProductsType', $product);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($product);
-            $em->flush();
-            $products = $em->getRepository('AppBundle:Products')->findAll();
-            return $this->render('products/index.html.twig', array(
-                'products' => $products,
-            ));
-        }
+      $product = new Products();
+      $product->setName($_POST["Name"]);
+      $product->setQuantity($_POST["Quantity"]);
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($product);
+      $em->flush();
 
-        return $this->render('products/new.html.twig', array(
-            'product' => $product,
-            'form' => $form->createView(),
-        ));
+     $response = new JsonResponse();
+      $response->setData(array('status' => "ok"));
+      return $response;
     }
 
     /**
