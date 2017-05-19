@@ -41,7 +41,6 @@ class ProductsController extends Controller
      */
     public function newAction(Request $request)
     {
-
             $product = new Products();
             $product->setName($_POST["Name"]);
             $product->setQuantity($_POST["Quantity"]);
@@ -52,6 +51,7 @@ class ProductsController extends Controller
             $response = new JsonResponse();
             $response->setData(array('status' => "ok"));
             return $response;
+
     }
 
     /**
